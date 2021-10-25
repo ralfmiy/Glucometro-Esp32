@@ -1,0 +1,58 @@
+esphome:
+  name: gluco
+  platform: ESP32
+  board: esp32dev
+
+  includes:
+    - as7263.h
+  libraries:
+    - "SparkFun AS726X"
+
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  password: ""
+
+ota:
+  password: ""
+
+wifi:
+  ssid: "Fibertel WiFi960 2.4GHz"
+  password: "00439895925"
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Gluco Fallback Hotspot"
+    password: "12345678"
+
+captive_portal:
+
+web_server:
+  port: 80
+
+sensor:
+- platform: custom
+  lambda: |-
+    auto my_sensor = new Mi7263();
+    App.register_component(my_sensor);
+    return {my_sensor->temperature_sensor, my_sensor->ondaR, my_sensor->ondaS, my_sensor->ondaT, my_sensor->ondaU, my_sensor->ondaV, my_sensor->ondaW};
+
+  sensors:
+  - name: "Temperatura"
+    unit_of_measurement: °C
+    accuracy_decimals: 2
+  - name: "Onda R"
+    accuracy_decimals: 2    
+  - name: "Onda S"
+    accuracy_decimals: 2    
+  - name: "Onda T"
+    accuracy_decimals: 2            
+  - name: "Onda U"
+    accuracy_decimals: 2    
+  - name: "Onda V"
+    accuracy_decimals: 2            
+  - name: "Onda W"
+    accuracy_decimals: 2        
